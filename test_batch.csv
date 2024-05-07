@@ -1,0 +1,4 @@
+﻿Chemical,Fub,Lipophilicity,"Solubility (pH 7, g/mL)",Papp_(dm/min),Clearance(/min),MW(g/mol),F,I,Cl,Br
+A,0.01,2,11,7.00E-03,0.1,230,,,,
+B,0.02,3,4,2.00E-04,0.2,300,,2,,
+C,0.03,4,2,8.00E-03,0.1,320,1,,1,
