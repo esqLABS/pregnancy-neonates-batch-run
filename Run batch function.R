@@ -1,15 +1,18 @@
+#Code to run the neonates and prgeanancy for 21mg/kg for 24 h and gets the Cmax
+#Author: Susana
 
 #get the function
-source("Baby and Pregnancy sim function.R")
-#simulation , 
+source("Neonate and Pregnancy sim function.R")
+
+#Run the simulations and get the Cmax and Tmax---------------------------------
 #you can select the PBK model 6months,2weeks, GW15, GW24
-#You can also select the Partition QSAR, Rodger_Rowland, Schmitt, PKSim and Poulin
-
+#You can also select the Partition QSAR: Rodger_Rowland, Schmitt, PKSim and Poulin
 runSimulation<-Run_batch("GW15","Rodger_Rowland")
-#if you want to see the Cmax
-runSimulation$tableCmax
 
-#If you want to check a plot for neonates--------------------------------
+#if you want to see the Cmax table
+View(runSimulation$tableCmax)
+
+#If you want to check a plot for neonates--------------------------------------
 chemical2plot<-"B"
 nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
 ### CHANGE SCALE TO LOG###
@@ -27,7 +30,7 @@ legend(x = "bottomright",          # Position
        lwd = 2)                 # Line width
 
 
-#If you want to check a plot for pregnancy----------------------------
+#If you want to check a plot for pregnancy-------------------------------------
 chemical2plot<-"B"
 nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
 ### CHANGE SCALE TO LOG###
