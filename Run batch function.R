@@ -5,9 +5,9 @@
 source("Neonate and Pregnancy sim function.R")
 
 #Run the simulations and get the Cmax and Tmax---------------------------------
-#you can select the PBK model 6months,2weeks, GW15, GW24
+#you can select the PBK model 6_months,2_weeks, GW15, GW24
 #You can also select the Partition QSAR: Rodger_Rowland, Schmitt, PKSim and Poulin
-runSimulation<-Run_batch("GW15","Rodger_Rowland")
+runSimulation<-Run_batch("2_weeks","Poulin")
 
 #if you want to see the Cmax table
 View(runSimulation$tableCmax)
