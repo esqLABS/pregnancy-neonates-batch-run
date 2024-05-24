@@ -3,17 +3,17 @@ library(ospsuite)
 library(tidyverse)
 
 #load the chemicals_input parameters
-input_physchem<-read.csv("test_batch.csv")
+input_physchem<-read.csv("test_batch_2.csv")
 
 #function 
-Run_batch<-function (individual,partitionQSPR){
+Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
   
-  #Load preganancy gestational age speicifc physiology
+  ###Load preganancy gestational age speicifc physiology
   gestationaPhysio<-read.csv("Gestational physiological parameters.csv")
   
   # We load the pkml for which the batches will be created
   if (individual=="6_months"&partitionQSPR=="Rodger_Rowland") {
-  sim1 <- loadSimulation("pkmlFiles/6_month_simulation_R&R.pkml", loadFromCache = FALSE)
+    sim1 <- loadSimulation("pkmlFiles/6_month_simulation_R&R.pkml", loadFromCache = FALSE)
   
   } else if  (individual=="6_months"&partitionQSPR=="Schmitt") {
     sim1 <- loadSimulation("pkmlFiles/6_month_simulation_Schmitt.pkml", loadFromCache = FALSE)
@@ -110,13 +110,32 @@ Run_batch<-function (individual,partitionQSPR){
     
     } else {warning("mistake in input model")}
   
+  ####CHANGE DOSE####
+  if (individual=="6_months"|individual=="2_weeks"){
+    Dose<-getParameter("Applications|Daily ingestion|Dissolved formulation|Application_1|ProtocolSchemaItem|DosePerBodyWeight",sim1)
+  }else if (individual=="GW24"|individual=="GW15"){
+    Dose<-getParameter("Applications|oral dose|Dissolved|Application_1|ProtocolSchemaItem|DosePerBodyWeight",sim1)
+  }else {}
+  
+  setParameterValues(Dose, Dose_mg_kg, units = "mg/kg")
+  
   
   #To see the simulation steps
-  timesteps<-sim1$outputSchema
-  ####CHECK FIRST STRUCTURE####--------------------------------------------------
+  clearOutputIntervals(simulation = sim1)
+  
+  addOutputInterval(simulation = sim1, startTime = 0, endTime = 120, 
+                    resolution = highResol,
+                    intervalName = "Simulation interval high resolution ")
+  
+  addOutputInterval(simulation = sim1, startTime = 120, endTime = 1440, 
+                    resolution =  lowResol,
+                    intervalName = "Simulation interval low resolution ")
+  
+  #timesteps<-sim1$outputSchema  #to see the schema
+  ####CHECK FIRST STRUCTURE####
   #Get parameters location
- tree <- getSimulationTree(sim1)
- tree$Test_Chemical
+  #tree <- getSimulationTree(sim1)
+  #tree$Test_Chemical
   
   #If I want to see the value of the parameter and units
   # 
@@ -126,30 +145,25 @@ Run_batch<-function (individual,partitionQSPR){
   # oralabs<-getParameter("Test_Chemical|Specific intestinal permeability (transcellular)", sim1)
   # clearance<-getParameter("Test_Chemical-Total Hepatic Clearance-database|Specific clearance", sim1)
   # MW<-getParameter("Test_Chemical|Molecular weight", sim1)
-  #Dose<-getParameter("Applications|Daily ingestion|Dissolved formulation|Application_1|ProtocolSchemaItem|DosePerBodyWeight", sim1)
-  #setParameterValues(Dose, Dose_mg_kg, units = "mg/kg")
   
-  #Make just one simulation for the original
-  # res <- runSimulations(sim1)
-  # outputValues<-getOutputValues(res[[1]])
-  
-  ####CONSTRUCT BATCH####----------------------------------------------------------
+  ####CONSTRUCT BATCH####
   # define the list of parameter that will be varied between the runs.
+
+
   parameterPaths <- c("Test_Chemical|Fraction unbound (plasma, reference value)",
-                      "Test_Chemical|Lipophilicity",
-                      "Test_Chemical|Solubility at reference pH",
-                      "Test_Chemical|Specific intestinal permeability (transcellular)",
-                      "Test_Chemical-Total Hepatic Clearance-database|Specific clearance",
-                      "Test_Chemical|Molecular weight",
-                      "Test_Chemical|Effective molecular weight",
-                      "Test_Chemical|pKa value 0",
-                      "Test_Chemical|pKa value 1",
-                      "Test_Chemical|pKa value 2",
-                      "Test_Chemical|Compound type 0",
-                      "Test_Chemical|Compound type 1",
-                      "Test_Chemical|Compound type 2")
-  
-  
+                    "Test_Chemical|Lipophilicity",
+                    "Test_Chemical|Solubility at reference pH",
+                    "Test_Chemical-Total Hepatic Clearance-database|Specific clearance",
+                    "Test_Chemical|Molecular weight",
+                    "Test_Chemical|Effective molecular weight",
+                    "Test_Chemical|pKa value 0",
+                    "Test_Chemical|pKa value 1",
+                    "Test_Chemical|pKa value 2",
+                    "Test_Chemical|Compound type 0",
+                    "Test_Chemical|Compound type 1",
+                    "Test_Chemical|Compound type 2")
+
+
   # define the simulation batch
   simBatch <- createSimulationBatch(simulation = sim1, parametersOrPaths = parameterPaths)
   
@@ -171,10 +185,10 @@ Run_batch<-function (individual,partitionQSPR){
     nI<- str_count(input_physchem[i,"SMILES"], "I")
     effective_mw<-input_physchem$MW[i] - nF * 0.000000017 - nCl * 0.000000022 - nBr * 0.000000062 - nI * 0.000000098 
     
+    
     simBatch$addRunValues(parameterValues = c(input_physchem[i,"Fub"],
                                               input_physchem[i,"Lipophilicity"],
                                               input_physchem[i,"Solubility..pH.7..g.mL."],
-                                              input_physchem[i,"Papp_.dm.min."],
                                               input_physchem[i,"Clearance..min."],
                                               input_physchem[i,"MW.kg.umol."],
                                               effective_mw,
@@ -183,8 +197,9 @@ Run_batch<-function (individual,partitionQSPR){
                                               input_physchem[i,"pKa3"],
                                               input_physchem[i,"CompountType1"],
                                               input_physchem[i,"CompountType2"],
-                                              input_physchem[i,"CompountType3"]))                                        
-    }
+                                              input_physchem[i,"CompountType3"]))
+
+     }
 
   ###SIMULATIONS###
   results <- runSimulationBatches(simBatch)

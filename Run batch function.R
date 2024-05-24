@@ -1,5 +1,5 @@
 #Code to run the neonates and prgeanancy for 21mg/kg for 24 h and gets the Cmax
-#Author: Susana
+#Author: Susana P
 
 #get the function
 source("Neonate and Pregnancy sim function.R")
@@ -7,7 +7,12 @@ source("Neonate and Pregnancy sim function.R")
 #Run the simulations and get the Cmax and Tmax---------------------------------
 #you can select the PBK model 6_months,2_weeks, GW15, GW24
 #You can also select the Partition QSAR: Rodger_Rowland, Schmitt, PKSim and Poulin
-runSimulation<-Run_batch("2_weeks","Poulin")
+#Dose_mg_kg is the dose in mg/kg 
+#highResol and lowResol are the resolution of the solver in points per minute
+#lowResol is the resolution in the 2 first hours and low Resol is for the remaining time
+
+runSimulation<-Run_batch(individual="GW15",partitionQSPR="Rodger_Rowland",
+                         Dose_mg_kg=0.5,highResol=0.33,lowResol=0.07)
 
 #if you want to see the Cmax table
 View(runSimulation$tableCmax)
