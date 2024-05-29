@@ -11,11 +11,12 @@ source("Neonate and Pregnancy sim function.R")
 #highResol and lowResol are the resolution of the solver in points per minute
 #lowResol is the resolution in the 2 first hours and low Resol is for the remaining time
 
-runSimulation<-Run_batch(individual="GW15",partitionQSPR="Rodger_Rowland",
-                         Dose_mg_kg=0.5,highResol=0.33,lowResol=0.07)
+runSimulation_Poulin<-Run_batch(individual="GW24",partitionQSPR="PKSim",
+                         Dose_mg_kg=1,highResol=0.33,lowResol=0.07)
 
 #if you want to see the Cmax table
-View(runSimulation$tableCmax)
+View(runSimulation_Poulin$tableCmax)
+
 
 #If you want to check a plot for neonates--------------------------------------
 chemical2plot<-"B"
