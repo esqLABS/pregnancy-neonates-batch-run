@@ -4,7 +4,7 @@ library(tidyverse)
 
 #load the chemicals_input parameters
 input_physchem<-read.csv("test_batch_2.csv")
-
+nChemicals<-nrow(input_physchem)
 #function 
 Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
   
@@ -198,8 +198,9 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
                                               input_physchem[i,"CompountType1"],
                                               input_physchem[i,"CompountType2"],
                                               input_physchem[i,"CompountType3"]))
-
-     }
+    
+    
+  }
 
   ###SIMULATIONS###
   results <- runSimulationBatches(simBatch)
@@ -227,9 +228,9 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
                                    "Brain-umol/L"=outputValues1$data$`Organism|Brain|Test_Chemical|Tissue`)
       
       tableCmax[j,1]<-max(batchResList[[j]]$VenousPlasma.umol.L)
-      tableCmax[j,2]<-batchResList[[j]]$Time.min[which(batchResList[[j]]$VenousPlasma.umol.L==tableCmax[j,1])]
+      tableCmax[j,2]<-batchResList[[j]]$Time.min[which(batchResList[[j]]$VenousPlasma.umol.L==tableCmax[j,1])][1]
       tableCmax[j,3]<-max(batchResList[[j]]$Brain.umol.L)
-      tableCmax[j,4]<-batchResList[[j]]$Time.min[which(batchResList[[j]]$Brain.umol.L==tableCmax[j,3])]
+      tableCmax[j,4]<-batchResList[[j]]$Time.min[which(batchResList[[j]]$Brain.umol.L==tableCmax[j,3])][1]
       }
   }else if (individual=="GW15"|individual=="GW24"){
     ####STORE DATA AND FIND CMAX####
@@ -254,11 +255,11 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
       
       
       tableCmax[j,1]<-max(batchResList[[j]]$MaternalVenousPlasma.umol.L)
-      tableCmax[j,2]<-batchResList[[j]]$Time.min[which(batchResList[[j]]$MaternalVenousPlasma.umol.L==tableCmax[j,1])]
+      tableCmax[j,2]<-batchResList[[j]]$Time.min[which(batchResList[[j]]$MaternalVenousPlasma.umol.L==tableCmax[j,1])][1]
       tableCmax[j,3]<-max(batchResList[[j]]$FetusVenousPlasma.umol.L)
-      tableCmax[j,4]<-batchResList[[j]]$Time.min[which(batchResList[[j]]$FetusVenousPlasma.umol.L==tableCmax[j,3])]
+      tableCmax[j,4]<-batchResList[[j]]$Time.min[which(batchResList[[j]]$FetusVenousPlasma.umol.L==tableCmax[j,3])][1]
       tableCmax[j,5]<-max(batchResList[[j]]$Fetus.umol.L)
-      tableCmax[j,6]<-batchResList[[j]]$Time.min[which(batchResList[[j]]$Fetus.umol.L==tableCmax[j,5])]
+      tableCmax[j,6]<-batchResList[[j]]$Time.min[which(batchResList[[j]]$Fetus.umol.L==tableCmax[j,5])][1]
 
     }
     
