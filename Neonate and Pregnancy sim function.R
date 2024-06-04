@@ -110,12 +110,27 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
     
     } else {warning("mistake in input model")}
   
-  ####CHANGE DOSE####
+  ####CHANGE DOSE###
+  ###Add outputs###
   if (individual=="6_months"|individual=="2_weeks"){
+    
     Dose<-getParameter("Applications|Daily ingestion|Dissolved formulation|Application_1|ProtocolSchemaItem|DosePerBodyWeight",sim1)
+    brainKp<-getParameter("Neighborhoods|Brain_int_Brain_cell|Test_Chemical|Partition coefficient (intracellular/plasma)",sim1)
+    adiposeKp<-getParameter("Neighborhoods|Fat_int_Fat_cell|Test_Chemical|Partition coefficient (intracellular/plasma)",sim1)
+    liverKp<-getParameter("Neighborhoods|Periportal_int_Periportal_cell|Test_Chemical|Partition coefficient (intracellular/plasma)",sim1)
+    pInt<-getParameter("Test_Chemical|Specific intestinal permeability (transcellular)", sim1)
+    addOutputs(c(brainKp,adiposeKp,liverKp,pInt),simulation = sim1)
+    
   }else if (individual=="GW24"|individual=="GW15"){
     Dose<-getParameter("Applications|oral dose|Dissolved|Application_1|ProtocolSchemaItem|DosePerBodyWeight",sim1)
-  }else {}
+    fetusKp<-getParameter("Neighborhoods|Fetus_int_Fetus_cell|Test_Chemical|Partition coefficient (intracellular/plasma)",sim1)
+    PlacentaKp<-getParameter("Neighborhoods|PlacentaMaternal_int_PlacentaMaternal_cell|Test_Chemical|Partition coefficient (intracellular/plasma)",sim1)
+    adiposeKp<-getParameter("Neighborhoods|Fat_int_Fat_cell|Test_Chemical|Partition coefficient (intracellular/plasma)",sim1)
+    liverKp<-getParameter("Neighborhoods|Periportal_int_Periportal_cell|Test_Chemical|Partition coefficient (intracellular/plasma)",sim1)
+    pInt<-getParameter("Test_Chemical|Specific intestinal permeability (transcellular)", sim1)
+    addOutputs(c(fetusKp,PlacentaKp,adiposeKp,liverKp,pInt),simulation = sim1)
+    
+    }else {}
   
   setParameterValues(Dose, Dose_mg_kg, units = "mg/kg")
   
@@ -131,6 +146,8 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
                     resolution =  lowResol,
                     intervalName = "Simulation interval low resolution ")
   
+  
+ 
   #timesteps<-sim1$outputSchema  #to see the schema
   ####CHECK FIRST STRUCTURE####
   #Get parameters location
@@ -170,7 +187,6 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
  
   #from NA to 0
   input_physchem[is.na(input_physchem)]<-0
-  nChemicals<-nrow(input_physchem)
   #Check if imported correctly
   #View(input_physchem)
 
@@ -215,9 +231,11 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
       #Open list for saving data
       batchResList<-list()
       #open table for Cmax and Tmax
-      tableCmax<-data.frame(matrix(ncol=4,nrow=nChemicals))
+      tableCmax<-data.frame(matrix(ncol=8,nrow=nChemicals))
       ###UNITS####
-      colnames(tableCmax)<-c("Cmax_Plasma_umol_L","Tmax_plasma_min","Cmax_Brain_umol_L","Tmax_brain_min")
+      colnames(tableCmax)<-c("Cmax_Plasma_umol_L","Tmax_plasma_min",
+                             "Cmax_Brain_umol_L","Tmax_brain_min",
+                             "BrainK","FatK","LiverK","Pint")
       rownames(tableCmax)<-input_physchem[,1]
       
       for (j in 1:nChemicals){
@@ -225,23 +243,32 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
       outputValues1<-getOutputValues(results[[1]][[j]])  
       batchResList[[j]]<-data.frame("Time-min"=outputValues1$data$Time,
                                    "VenousPlasma-umol/L"=outputValues1$data$`Organism|PeripheralVenousBlood|Test_Chemical|Plasma (Peripheral Venous Blood)`,
-                                   "Brain-umol/L"=outputValues1$data$`Organism|Brain|Test_Chemical|Tissue`)
+                                   "Brain-umol/L"=outputValues1$data$`Organism|Brain|Test_Chemical|Tissue`,
+                                   "BrainK"=outputValues1$data$`Neighborhoods|Brain_int_Brain_cell|Test_Chemical|Partition coefficient (intracellular/plasma)`,
+                                   "FatK"=outputValues1$data$`Neighborhoods|Fat_int_Fat_cell|Test_Chemical|Partition coefficient (intracellular/plasma)`,
+                                   "LiverK"=outputValues1$data$`Neighborhoods|Periportal_int_Periportal_cell|Test_Chemical|Partition coefficient (intracellular/plasma)`,
+                                   "Pint"=outputValues1$dat$`Test_Chemical|Specific intestinal permeability (transcellular)`)
       
       tableCmax[j,1]<-max(batchResList[[j]]$VenousPlasma.umol.L)
       tableCmax[j,2]<-batchResList[[j]]$Time.min[which(batchResList[[j]]$VenousPlasma.umol.L==tableCmax[j,1])][1]
       tableCmax[j,3]<-max(batchResList[[j]]$Brain.umol.L)
       tableCmax[j,4]<-batchResList[[j]]$Time.min[which(batchResList[[j]]$Brain.umol.L==tableCmax[j,3])][1]
+      tableCmax[j,5]<-batchResList[[j]]$BrainK[1]
+      tableCmax[j,6]<-batchResList[[j]]$FatK[1]
+      tableCmax[j,7]<-batchResList[[j]]$LiverK[1]
+      tableCmax[j,8]<-batchResList[[j]]$Pint[1]
       }
   }else if (individual=="GW15"|individual=="GW24"){
     ####STORE DATA AND FIND CMAX####
     #Open list for saving data
     batchResList<-list()
     #open table for Cmax and Tmax
-    tableCmax<-data.frame(matrix(ncol=6,nrow=nChemicals))
+    tableCmax<-data.frame(matrix(ncol=11,nrow=nChemicals))
     ###UNITS####
     colnames(tableCmax)<-c("Cmax_Maternal_plasma_umol_L","Tmax_Maternal_plasma_min",
                            "Cmax_Fetus_plasma_umol_L","Tmax_Fetus_plasma_min",
-                           "Cmax_Fetus_umol_L","Tmax_Fetus_min")
+                           "Cmax_Fetus_umol_L","Tmax_Fetus_min",
+                           "fetusKp","placentaKp","FatK","LiverK", "Pint")
     
     rownames(tableCmax)<-input_physchem[,1]
     
@@ -251,7 +278,12 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
       batchResList[[j]]<-data.frame("Time-min"=outputValues1$data$Time,
                                     "MaternalVenousPlasma-umol/L"=outputValues1$data$`Organism|PeripheralVenousBlood|Test_Chemical|Plasma (Peripheral Venous Blood)`,
                                     "FetusVenousPlasma-umol/L"=outputValues1$data$`Organism|Fetus|Plasma|Test_Chemical|Concentration in container`,
-                                    "Fetus-umol/L"=outputValues1$data$`Organism|Fetus|Test_Chemical|Tissue`)
+                                    "Fetus-umol/L"=outputValues1$data$`Organism|Fetus|Test_Chemical|Tissue`,
+                                    "fetusKp"=outputValues1$data$`Neighborhoods|Fetus_int_Fetus_cell|Test_Chemical|Partition coefficient (intracellular/plasma)`,
+                                    "placentaKp"=outputValues1$data$`Neighborhoods|PlacentaMaternal_int_PlacentaMaternal_cell|Test_Chemical|Partition coefficient (intracellular/plasma)`,
+                                    "fatK"=outputValues1$data$`Neighborhoods|Fat_int_Fat_cell|Test_Chemical|Partition coefficient (intracellular/plasma)`,
+                                    "liverK"=outputValues1$data$`Neighborhoods|Periportal_int_Periportal_cell|Test_Chemical|Partition coefficient (intracellular/plasma)`,
+                                    "pint"=outputValues1$dat$`Test_Chemical|Specific intestinal permeability (transcellular)`)
       
       
       tableCmax[j,1]<-max(batchResList[[j]]$MaternalVenousPlasma.umol.L)
@@ -260,7 +292,11 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
       tableCmax[j,4]<-batchResList[[j]]$Time.min[which(batchResList[[j]]$FetusVenousPlasma.umol.L==tableCmax[j,3])][1]
       tableCmax[j,5]<-max(batchResList[[j]]$Fetus.umol.L)
       tableCmax[j,6]<-batchResList[[j]]$Time.min[which(batchResList[[j]]$Fetus.umol.L==tableCmax[j,5])][1]
-
+      tableCmax[j,7]<-batchResList[[j]]$fetusKp[1]
+      tableCmax[j,8]<-batchResList[[j]]$placentaKp[1]
+      tableCmax[j,9]<-batchResList[[j]]$fatK[1]
+      tableCmax[j,10]<-batchResList[[j]]$liverK[1]
+      tableCmax[j,11]<-batchResList[[j]]$pint[1]
     }
     
   }
