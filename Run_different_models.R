@@ -10,7 +10,6 @@ PKalgor<-rep(c("Rodger_Rowland","Schmitt","PKSim","Poulin"),4)
 runSimulation<-list()
 dataModel<-data.frame(matrix(ncol = 4, nrow = nChemicals))
 mergeDataModel<-data.frame()
-colnames(mergeDataModel)=c("Chemicals","Cmax_plasma","age","PartitionQSPR")
 
 for (i in seq(1:length(age))){
     ### make this a dataframe
@@ -33,6 +32,8 @@ for (i in seq(1:length(age))){
   mergeDataModel<-bind_rows(mergeDataModel,dataModel)
 
 }
+colnames(mergeDataModel)=c("Chemicals","Cmax_plasma","age","PartitionQSPR")
+
 
 ###Plot Maternal Cmax plasma
 ggplot(data=mergeDataModel,aes(x=Chemicals,y=Cmax_plasma,shape=PartitionQSPR,color=PartitionQSPR))+
