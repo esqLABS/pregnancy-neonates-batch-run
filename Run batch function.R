@@ -11,23 +11,23 @@ source("Neonate and Pregnancy sim function.R")
 #highResol and lowResol are the resolution of the solver in points per minute
 #lowResol is the resolution in the 2 first hours and low Resol is for the remaining time
 
-runSimulation<-Run_batch(individual="2_weeks",partitionQSPR="Schmitt",
+runSimulation_1<-Run_batch(individual="2_weeks",partitionQSPR="PKSim",
                          Dose_mg_kg=1,highResol=0.33,lowResol=0.07)
 
 #if you want to see the Cmax table
-View(runSimulation$tableCmax)
+View(runSimulation_1$tableCmax)
 
 #If you want to check a plot for neonates--------------------------------------
-chemical2plot<-"B"
+chemical2plot<-"Warfarin"
 nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
 ### CHANGE SCALE TO LOG###
-plot(x=runSimulation$batchResList[[nrChemical]]$Time,
-     y=runSimulation$batchResList[[nrChemical]]$Brain.umol.L,type="l",
+plot(x=runSimulation_1$batchResList[[nrChemical]]$Time,
+     y=runSimulation_1$batchResList[[nrChemical]]$Brain.umol.L,type="l",
      xlab="Time in min",
      ylab="Concentration in umol/L",
-     log='y',ylim=c(0.001,1.5))
-lines(x=runSimulation$batchResList[[nrChemical]]$Time,
-      y=runSimulation$batchResList[[nrChemical]]$VenousPlasma.umol.L,col="red")
+     log='y',ylim=c(0.001,6))
+lines(x=runSimulation_1$batchResList[[nrChemical]]$Time,
+      y=runSimulation_1$batchResList[[nrChemical]]$VenousPlasma.umol.L,col="red")
 legend(x = "bottomright",          # Position
        legend = c("brain", "plasma"),  # Legend texts
        lty = c(1, 2),           # Line types
