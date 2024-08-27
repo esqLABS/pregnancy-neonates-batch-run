@@ -1,5 +1,5 @@
 #Test function#--------
-#It runs all the partitions
+#It runs all the partitions just to check if there are no bugs
 
 #get the function
 source("Neonate and Pregnancy sim function.R")

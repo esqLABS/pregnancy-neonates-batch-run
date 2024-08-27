@@ -11,9 +11,11 @@ source("Neonate and Pregnancy sim function.R")
 #highResol and lowResol are the resolution of the solver in points per minute
 #lowResol is the resolution in the 2 first hours and low Resol is for the remaining time
 
-runSimulation_1<-Run_batch(individual="2_weeks",partitionQSPR="PKSim",
+runSimulation_1<-Run_batch(individual="GW24",partitionQSPR="Poulin",
                          Dose_mg_kg=1,highResol=0.33,lowResol=0.07)
 
+
+write.csv(runSimulation_1$tableCmax, "C:/Users/SusanaProença/OneDrive - esqlabs GmbH/Desktop/ONTOX-PBK models/Pregnancy and Pediatric R Project batch run/GW24_Poulin.csv")
 #if you want to see the Cmax table
 View(runSimulation_1$tableCmax)
 

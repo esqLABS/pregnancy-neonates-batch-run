@@ -135,7 +135,7 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
     
     }else {}
   
- # setParameterValues(Dose, Dose_mg_kg, units = "mg/kg")
+  setParameterValues(Dose, Dose_mg_kg, units = "mg/kg")
   
   
   #To see the simulation steps
@@ -168,8 +168,6 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
   
   ####CONSTRUCT BATCH####
   # define the list of parameter that will be varied between the runs.
-
-
   parameterPaths <- c("Test_Chemical|Fraction unbound (plasma, reference value)",
                     "Test_Chemical|Lipophilicity",
                     "Test_Chemical|Solubility at reference pH",
@@ -190,6 +188,7 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
  
   #from NA to 0
   input_physchem[is.na(input_physchem)]<-0
+  
   #Check if imported correctly
   #View(input_physchem)
 
@@ -223,10 +222,7 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
 
   ###SIMULATIONS###
   results <- runSimulationBatches(simBatch)
-  #get the name of values
-  
-   #print(names(unlist(results)))
-  
+ 
   #Note:The enqueued run values are cleared after calling runSimulationBatches(),
   #so executing the run again would result in an empty results list.
   if (individual=="6_months"|individual=="2_weeks"){
@@ -234,7 +230,7 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
       #Open list for saving data
       batchResList<-list()
       #open table for Cmax and Tmax
-      tableCmax<-data.frame(matrix(ncol=12,nrow=nChemicals))
+      tableCmax<-data.frame(matrix(ncol=9,nrow=nChemicals))
       ###UNITS####
       colnames(tableCmax)<-c("Cmax_Plasma_umol_L","Tmax_plasma_min",
                              "Cmax_Brain_umol_L","Tmax_brain_min",
@@ -269,9 +265,6 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
       tableCmax[j,9]<-pkAnalysis$pKParameterFor(
         quantityPath = "Organism|PeripheralVenousBlood|Test_Chemical|Plasma (Peripheral Venous Blood)",
         pkParameter = "Vd")$values
-      tableCmax[j,10]<-batchResList[[j]]$Permeability[1]
-      tableCmax[j,11]<-batchResList[[j]]$Fu[1]
-      tableCmax[j,12]<-batchResList[[j]]$massDrug[1]
       
       
       }
