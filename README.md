@@ -1,11 +1,11 @@
-#Introduction to project
+# Introduction to project
 
 This project aim is to run several chemicals in batch for neonates (2 weeks and 6 months)<br /> 
 and pregnancy (GW 15 and 24) for oral exposure.   
 The project started with a collaboration with INOTIV where simulations were compared with <br />
 httk and simulation plus.
 This comparison resulted in the publication: ""
-It was identified that, especially when using logKow as input for lipophilicity,
+It was identified that, especially when using logKow as input for lipophilicity, <br />
 chemical with very low values (<-1) and very high (>4.5) are the ones where PK-Sim simulations <br />
 are more distinct from the other softwares.
 
@@ -19,7 +19,7 @@ But we are also working on improving a workflow for parameterizing PK-Sim PBK mo
 
 These improvements on the PBK model parameterization are being developed in the ONTOX project and will be added here. 
 
-##description code
+## description code
 For the chemicals it is only needed the MW, logP, Fu, SMILES and ionization (pKa nad type ionization). <br />
 A example of a file with the physicochemical properties of the chemicals is :  test_batch_2.
 Oral permeability and tissue permeability values are as calculated by default with the OSP internal QSAR. 
