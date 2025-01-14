@@ -15,10 +15,10 @@ In this publication, it was identified that, especially when using logKow as inp
 chemical with very low values (<-1) and very high (>4.5) are the ones where PK-Sim simulations 
 are more distinct from the other softwares.
 
-For the very polar chemicals it was identified that PK-Sim is underpredicting intestinal and
-possibly tissues permeability (e.g. methotrexate)
-Hence we are currently evaluating the use of in vitro or other QSARs for parameterizing the 
-permeability of these chemicals. 
+For the very polar chemicals it was identified that PK-Sim model using the internally calculated Pint is underpredicting intestinal and
+possibly tissues permeability (e.g. methotrexate).
+Using Papp values from Caco-2  does seem to drastically improve predictions for methotrexate.
+Hence we are currently evaluating the use of Papp values or other QSARs for parameterizing Pint for  other very polar chemicals. 
 
 For the very lipophilic chemicals it is not clear which PBK platform leads to best predictions.
 But we are also working on improving a workflow for parameterizing PK-Sim PBK models for highly lipophilic chemicals.
