@@ -9,7 +9,7 @@ input_physchem<-read.csv("test_batch_2.csv")
 nChemicals<-nrow(input_physchem)
 
 #function 
-Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
+Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol,permeability=NULL){
   
    #### Load PKML files ####
   # We load the pkml for which the batches will be created
