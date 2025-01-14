@@ -5,7 +5,7 @@ library(RSQLite)
 library(DBI)
 
 #load the chemicals_input parameters
-input_physchem<-read.csv("test_batch_2.csv")
+input_physchem<-read.csv("test_files/test_batch_2.csv")
 nChemicals<-nrow(input_physchem)
 
 #function 

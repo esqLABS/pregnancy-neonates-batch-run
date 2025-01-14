@@ -23,47 +23,47 @@ runSimulation_1<-Run_batch(individual="GW15",partitionQSPR="Rodger_Rowland",
 # write.csv(runSimulation_1$tb_results, "/results_simulation.csv")
 
 #Plots--------------------------------------------------------------------------
-#If you want to check a plot for neonates
-chemical2plot<-"Warfarin"
-nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
-### CHANGE SCALE TO LOG###
-max_y<-max(runSimulation_1$batchResList[[nrChemical]]$Brain.umol.L,
-           runSimulation_1$batchResList[[nrChemical]]$VenousPlasma.umol.L)
-
-plot(x=runSimulation_1$batchResList[[nrChemical]]$Time,
-     y=runSimulation_1$batchResList[[nrChemical]]$Brain.umol.L,type="l",
-     xlab="Time in min",
-     ylab="Concentration in umol/L",
-     log='y',ylim=c(0.001,max_y))
-lines(x=runSimulation_1$batchResList[[nrChemical]]$Time,
-      y=runSimulation_1$batchResList[[nrChemical]]$VenousPlasma.umol.L,col="red")
-legend(x = "bottomright",          # Position
-       legend = c("brain", "plasma"),  # Legend texts
-       lty = c(1, 2),           # Line types
-       col = c("black", "red"),           # Line colors
-       lwd = 2)                 # Line width
-
-
-#If you want to check a plot for pregnancy
-chemical2plot<-"Tetracycline"
-nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
-
-max_y<-max(runSimulation_1$batchResList[[nrChemical]]$FetusVenousPlasma.umol.L,
-           runSimulation_1$batchResList[[nrChemical]]$MaternalVenousPlasma.umol.L,
-           runSimulation_1$batchResList[[nrChemical]]$Fetus.umol.L)
-
-### CHANGE SCALE TO LOG###
-plot(x=runSimulation_1$batchResList[[nrChemical]]$Time,
-     y=runSimulation_1$batchResList[[nrChemical]]$MaternalVenousPlasma.umol.L,type="l",
-     xlab="Time in min",
-     ylab="Concentration in umol/L",
-     log='y',ylim=c(0.0001,max_y))
-lines(x=runSimulation_1$batchResList[[nrChemical]]$Time,
-      y=runSimulation_1$batchResList[[nrChemical]]$FetusVenousPlasma.umol.L,col="red")
-lines(x=runSimulation_1$batchResList[[nrChemical]]$Time,
-      y=runSimulation_1$batchResList[[nrChemical]]$Fetus.umol.L,col="blue")
-legend(x = "bottomright",          # Position
-       legend = c("maternal plasma","fetus plasma","fetus"),  # Legend texts
-       lty = c(1, 2),           # Line types
-       col = c("black", "red","blue"),           # Line colors
-       lwd = 2)                 # Line width
+# #If you want to check a plot for neonates
+# chemical2plot<-"Warfarin"
+# nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
+# ### CHANGE SCALE TO LOG###
+# max_y<-max(runSimulation_1$batchResList[[nrChemical]]$Brain.umol.L,
+#            runSimulation_1$batchResList[[nrChemical]]$VenousPlasma.umol.L)
+# 
+# plot(x=runSimulation_1$batchResList[[nrChemical]]$Time,
+#      y=runSimulation_1$batchResList[[nrChemical]]$Brain.umol.L,type="l",
+#      xlab="Time in min",
+#      ylab="Concentration in umol/L",
+#      log='y',ylim=c(0.001,max_y))
+# lines(x=runSimulation_1$batchResList[[nrChemical]]$Time,
+#       y=runSimulation_1$batchResList[[nrChemical]]$VenousPlasma.umol.L,col="red")
+# legend(x = "bottomright",          # Position
+#        legend = c("brain", "plasma"),  # Legend texts
+#        lty = c(1, 2),           # Line types
+#        col = c("black", "red"),           # Line colors
+#        lwd = 2)                 # Line width
+# 
+# 
+# #If you want to check a plot for pregnancy
+# chemical2plot<-"Tetracycline"
+# nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
+# 
+# max_y<-max(runSimulation_1$batchResList[[nrChemical]]$FetusVenousPlasma.umol.L,
+#            runSimulation_1$batchResList[[nrChemical]]$MaternalVenousPlasma.umol.L,
+#            runSimulation_1$batchResList[[nrChemical]]$Fetus.umol.L)
+# 
+# ### CHANGE SCALE TO LOG###
+# plot(x=runSimulation_1$batchResList[[nrChemical]]$Time,
+#      y=runSimulation_1$batchResList[[nrChemical]]$MaternalVenousPlasma.umol.L,type="l",
+#      xlab="Time in min",
+#      ylab="Concentration in umol/L",
+#      log='y',ylim=c(0.0001,max_y))
+# lines(x=runSimulation_1$batchResList[[nrChemical]]$Time,
+#       y=runSimulation_1$batchResList[[nrChemical]]$FetusVenousPlasma.umol.L,col="red")
+# lines(x=runSimulation_1$batchResList[[nrChemical]]$Time,
+#       y=runSimulation_1$batchResList[[nrChemical]]$Fetus.umol.L,col="blue")
+# legend(x = "bottomright",          # Position
+#        legend = c("maternal plasma","fetus plasma","fetus"),  # Legend texts
+#        lty = c(1, 2),           # Line types
+#        col = c("black", "red","blue"),           # Line colors
+#        lwd = 2)                 # Line width
