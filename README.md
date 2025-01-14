@@ -27,10 +27,10 @@ These improvements on the PBK model parameterization are being developed in the 
 
 ## Description of the project
 
-The file [Neonate and Pregnancy sim function.R](https://github.com/esqLABS/pregnancy-neonates-batch-run/blob/master/Neonate%20and%20Pregnancy%20sim%20function.R) has the workflow to make the simualtions for the different ages, partition coefficients and get the different outputs.
-If file is changed we advised running the file [Run_different_models.R](https://github.com/esqLABS/pregnancy-neonates-batch-run/blob/master/test_files/Run_different_models.R) to make sure there is not errors popping with any of the selections. 
+The file [Neonate and Pregnancy sim function.R](https://github.com/esqLABS/pregnancy-neonates-batch-run/blob/master/Neonate%20and%20Pregnancy%20sim%20function.R) has the workflow to make the simulations for the different ages, partition coefficients and get the different outputs.
+If file is changed we advised running the file [Run_different_models.R](https://github.com/esqLABS/pregnancy-neonates-batch-run/blob/master/test_files/Run_different_models.R) to make sure there is no errors popping with any of the selections. 
 
-From the chemicals it is only needed the MW, logP, Fu, SMILES and ionization (pKa and type ionization). 
+From the chemicals it is only needed the MW, logP, Fu, hepatic clearance (/min) SMILES and ionization (pKa and type ionization). 
 A example of a file with the physicochemical properties of the chemicals is : [test_batch_2](https://github.com/esqLABS/pregnancy-neonates-batch-run/tree/master#:~:text=csv%20identically%20to-,test_batch_2,-and%20replace%20the).
 If you have a new chemical list you want to run, design the .csv identically to this test_2.csv and replace
 the name of the new chemicals file in line 8 of the "Neonate and Pregnancy sim function.R".
