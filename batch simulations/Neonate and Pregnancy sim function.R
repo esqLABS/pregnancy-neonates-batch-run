@@ -4,7 +4,6 @@ library(tidyverse)
 library(RSQLite)
 library(DBI)
 
-
 #load the chemicals_input parameters
 input_physchem<-read.csv("test_batch_2.csv")
 nChemicals<-nrow(input_physchem)
@@ -56,41 +55,40 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
     
   }  else {warning("mistake in input model")}
   
-  
-  #Import pregnancy physiological changes---------------------------------------
-  PKSimDB_path <- "./PKSimDB.sqlite"
-  conn <- dbConnect(SQLite(),PKSimDB_path)
-  
-  dist <- dbGetQuery(conn, "SELECT * FROM VIEW_PARAMETER_DISTRIBUTIONS")
-  pregnant <- dist %>% filter(Population == "Pregnant") %>% 
-    select(ContainerName, ParameterName, Age, Mean, Dimension) %>%
-    add_count(ContainerName, ParameterName, sort = TRUE) %>%
-    filter(n > 1) #remove parameters that do not change throughout GW
-  
-  #Make paths
-  #make sure path does not repeat "Organism"
-  for (i in 1:nrow(pregnant)){
-    if (pregnant[i,"ContainerName"]=="Organism"){
-      
-      pregnant[i,"paths"]<-paste(pregnant[i,"ContainerName"],pregnant[i,"ParameterName"],sep="|")
-      
-    } else if (pregnant[i,"ContainerName"]=="PlacentaMaternal_pls_PlacentaFetal_cell") {
-      
-      pregnant[i,"paths"]<-"Neighborhoods|PlacentaMaternal_pls_PlacentaFetal_cell|Surface area (plasma/cell)"
-    
-      } else if (pregnant[i,"ContainerName"]=="PlacentaFetal") {
-       
-      pregnant[i,"paths"]<-"Organism|Fetus|Fetal Hematocrit"
-      
-    } else {
-      pregnant[i,"paths"]<-paste("Organism",pregnant[i,"ContainerName"],pregnant[i,"ParameterName"],sep="|")
-    }
-  }
-  #Have unique list of paths
-  unique_param <- unique(pregnant["paths"])
-  
   #define gestational age for calculation below 
   if (individual=="GW15"|individual=="G24"){
+    
+      #Import pregnancy physiological changes---------------------------------------
+      PKSimDB_path <- "pkmlFiles and physiological db/PKSimDB.sqlite"
+      conn <- dbConnect(SQLite(),PKSimDB_path)
+      
+      dist <- dbGetQuery(conn, "SELECT * FROM VIEW_PARAMETER_DISTRIBUTIONS")
+      pregnant <- dist %>% filter(Population == "Pregnant") %>% 
+        select(ContainerName, ParameterName, Age, Mean, Dimension) %>%
+        add_count(ContainerName, ParameterName, sort = TRUE) %>%
+        filter(n > 1) #remove parameters that do not change throughout GW
+      
+      #Make paths
+      #make sure path does not repeat "Organism"
+      for (i in 1:nrow(pregnant)){
+        if (pregnant[i,"ContainerName"]=="Organism"){
+          
+          pregnant[i,"paths"]<-paste(pregnant[i,"ContainerName"],pregnant[i,"ParameterName"],sep="|")
+          
+        } else if (pregnant[i,"ContainerName"]=="PlacentaMaternal_pls_PlacentaFetal_cell") {
+          
+          pregnant[i,"paths"]<-"Neighborhoods|PlacentaMaternal_pls_PlacentaFetal_cell|Surface area (plasma/cell)"
+        
+          } else if (pregnant[i,"ContainerName"]=="PlacentaFetal") {
+           
+          pregnant[i,"paths"]<-"Organism|Fetus|Fetal Hematocrit"
+          
+        } else {
+          pregnant[i,"paths"]<-paste("Organism",pregnant[i,"ContainerName"],pregnant[i,"ParameterName"],sep="|")
+        }
+      }
+      #Have unique list of paths
+      unique_param <- unique(pregnant["paths"])
       
       if (individual=="GW15"){
       gwAge <- as.numeric(30+((15*7)/365)) 
@@ -181,7 +179,18 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
                     "Test_Chemical|Compound type 0",
                     "Test_Chemical|Compound type 1",
                     "Test_Chemical|Compound type 2")
-
+  
+  #to change permeability if we want to assum high permeability
+  if (permeability=="high_oral_perm"){
+    
+    parameterPaths[length( parameterPaths)+1]<-"Test_Chemical|Intestinal permeability (transcellular)"
+    
+  } else if (permeability=="high_oral_tissue_perm"){
+    
+    parameterPaths[length(parameterPaths)+1]<-"Test_Chemical|Intestinal permeability (transcellular)"
+    parameterPaths[length(parameterPaths)+1]<-"Test_Chemical|Permeability"
+    
+  } else {}
 
   # define the simulation batch
   simBatch <- createSimulationBatch(simulation = sim1, parametersOrPaths = parameterPaths)
@@ -203,19 +212,31 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol){
     nI<- str_count(input_physchem[i,"SMILES"], "I")
     effective_mw<-input_physchem$MW[i] - nF * 0.000000017 - nCl * 0.000000022 - nBr * 0.000000062 - nI * 0.000000098 
     
-    simBatch$addRunValues(parameterValues = c( input_physchem[i,"Fub"],
-                                              input_physchem[i,"Lipophilicity"],
-                                              input_physchem[i,"Solubility..pH.7..g.mL."],
-                                              input_physchem[i,"Clearance..min."],
-                                              input_physchem[i,"MW.kg.umol."],
-                                              effective_mw,
-                                              input_physchem[i,"pKa1"],
-                                              input_physchem[i,"pKa2"],
-                                              input_physchem[i,"pKa3"],
-                                              input_physchem[i,"CompountType1"],
-                                              input_physchem[i,"CompountType2"],
-                                              input_physchem[i,"CompountType3"]))
+    parameterValues = c( input_physchem[i,"Fub"],
+                         input_physchem[i,"Lipophilicity"],
+                         input_physchem[i,"Solubility..pH.7..g.mL."],
+                         input_physchem[i,"Clearance..min."],
+                         input_physchem[i,"MW.kg.umol."],
+                         effective_mw,
+                         input_physchem[i,"pKa1"],
+                         input_physchem[i,"pKa2"],
+                         input_physchem[i,"pKa3"],
+                         input_physchem[i,"CompountType1"],
+                         input_physchem[i,"CompountType2"],
+                         input_physchem[i,"CompountType3"])
     
+    if (permeability=="high_oral_perm"){
+      
+      parameterValues[length(parameterValues)+1]<-0.1 #default high value
+      
+    } else if (permeability=="high_oral_tissue_perm"){
+      
+      parameterValues[length(parameterValues)+1]<-0.1 #default high value
+      parameterValues[length(parameterValues)+1]<-10  #default high value
+      
+    } else {}
+    
+    simBatch$addRunValues(parameterValues = parameterValues)
     
   }
 

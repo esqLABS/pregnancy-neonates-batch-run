@@ -9,7 +9,7 @@ It was identified that, especially when using logKow as input for lipophilicity,
 chemical with very low values (<-1) and very high (>4.5) are the ones where PK-Sim simulations <br />
 are more distinct from the other softwares.
 
-For the very polar chemicals it was identified that indeed PK-Sim is underpredicting intestinal and<br />
+For the very polar chemicals it was identified that PK-Sim is underpredicting intestinal and<br />
 possibly tissues permeability.
 Hence we are currently evaluating the use of in vitro or other QSARs for parameterizing the <br />
 permeability of these chemicals. 

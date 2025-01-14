@@ -13,31 +13,31 @@ Run_batch_Quick2<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowRes
   
   # We load the pkml for which the batches will be created
   if (individual=="6_months"&partitionQSPR=="Rodger_Rowland") {
-    sim1 <- loadSimulation("pkmlFiles/6_month_simulation_R&R.pkml", loadFromCache = FALSE)
+    sim1 <- loadSimulation("pkmlFiles and physiological db/6_month_simulation_R&R.pkml", loadFromCache = FALSE)
     
   } else if  (individual=="6_months"&partitionQSPR=="Schmitt") {
-    sim1 <- loadSimulation("pkmlFiles/6_month_simulation_Schmitt.pkml", loadFromCache = FALSE)
+    sim1 <- loadSimulation("pkmlFiles and physiological db/6_month_simulation_Schmitt.pkml", loadFromCache = FALSE)
     
   } else if  (individual=="6_months"&partitionQSPR=="PKSim") {
-    sim1 <- loadSimulation("pkmlFiles/6_month_simulation_PKSim.pkml", loadFromCache = FALSE)
+    sim1 <- loadSimulation("pkmlFiles and physiological db/6_month_simulation_PKSim.pkml", loadFromCache = FALSE)
     
   } else if  (individual=="6_months"&partitionQSPR=="Poulin") {
-    sim1 <- loadSimulation("pkmlFiles/6_month_simulation_Poulin.pkml", loadFromCache = FALSE)
+    sim1 <- loadSimulation("pkmlFiles and physiological db/6_month_simulation_Poulin.pkml", loadFromCache = FALSE)
     
   } else if  (individual=="2_weeks"&partitionQSPR=="Rodger_Rowland") {
-    sim1 <- loadSimulation("pkmlFiles/2_weeks_simulation_R&R.pkml", loadFromCache = FALSE)
+    sim1 <- loadSimulation("pkmlFiles and physiological db/2_weeks_simulation_R&R.pkml", loadFromCache = FALSE)
     
   } else if  (individual=="2_weeks"&partitionQSPR=="Schmitt") {
-    sim1 <- loadSimulation("pkmlFiles/2_weeks_simulation_Schmitt.pkml", loadFromCache = FALSE)
+    sim1 <- loadSimulation("pkmlFiles and physiological db/2_weeks_simulation_Schmitt.pkml", loadFromCache = FALSE)
     
   } else if  (individual=="2_weeks"&partitionQSPR=="PKSim") {
-    sim1 <- loadSimulation("pkmlFiles/2_weeks_simulation_PKSim.pkml", loadFromCache = FALSE)
+    sim1 <- loadSimulation("pkmlFiles and physiological db/2_weeks_simulation_PKSim.pkml", loadFromCache = FALSE)
     
   } else if  (individual=="2_weeks"&partitionQSPR=="Poulin") {
-    sim1 <- loadSimulation("pkmlFiles/2_weeks_simulation_Poulin.pkml", loadFromCache = FALSE)
+    sim1 <- loadSimulation("pkmlFiles and physiological db/2_weeks_simulation_Poulin.pkml", loadFromCache = FALSE)
     
   } else if  (individual=="GW15"&partitionQSPR=="Rodger_Rowland") {
-    sim1<-loadSimulation("pkmlFiles/Pregnant_simulation_R&R.pkml", loadFromCache = FALSE)
+    sim1<-loadSimulation("pkmlFiles and physiological db/Pregnant_simulation_R&R.pkml", loadFromCache = FALSE)
     
     #Change the physiology to a GW15 physiology
     for (i in 2:ncol(gestationaPhysio)){
@@ -47,7 +47,7 @@ Run_batch_Quick2<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowRes
     
   } else if  (individual=="GW15"&partitionQSPR=="Schmitt") {
     
-    sim1<-loadSimulation("pkmlFiles/Pregnant_simulation_Schmitt.pkml", loadFromCache = FALSE)
+    sim1<-loadSimulation("pkmlFiles and physiological db/Pregnant_simulation_Schmitt.pkml", loadFromCache = FALSE)
     
     for (i in 2:ncol(gestationaPhysio)){
       param2change15w<-getParameter(gestationaPhysio[1,i], sim1)
@@ -56,7 +56,7 @@ Run_batch_Quick2<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowRes
     
   } else if  (individual=="GW15"&partitionQSPR=="PKSim") {
     
-    sim1<-loadSimulation("pkmlFiles/Pregnant_simulation_PKSim.pkml", loadFromCache = FALSE)
+    sim1<-loadSimulation("pkmlFiles and physiological db/Pregnant_simulation_PKSim.pkml", loadFromCache = FALSE)
     
     for (i in 2:ncol(gestationaPhysio)){
       param2change15w<-getParameter(gestationaPhysio[1,i], sim1)
@@ -65,7 +65,7 @@ Run_batch_Quick2<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowRes
     
   } else if  (individual=="GW15"&partitionQSPR=="Poulin") {
     
-    sim1<-loadSimulation("pkmlFiles/Pregnant_simulation_Poulin.pkml", loadFromCache = FALSE)
+    sim1<-loadSimulation("pkmlFiles and physiological db/Pregnant_simulation_Poulin.pkml", loadFromCache = FALSE)
     
     for (i in 2:ncol(gestationaPhysio)){
       param2change15w<-getParameter(gestationaPhysio[1,i], sim1)
@@ -74,7 +74,7 @@ Run_batch_Quick2<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowRes
     
   } else if  (individual=="GW24"&partitionQSPR=="Rodger_Rowland") {  
     
-    sim1<-loadSimulation("pkmlFiles/Pregnant_simulation_R&R.pkml", loadFromCache = FALSE)
+    sim1<-loadSimulation("pkmlFiles and physiological db/Pregnant_simulation_R&R.pkml", loadFromCache = FALSE)
     
     for (i in 2:ncol(gestationaPhysio)){
       param2change24w<-getParameter(gestationaPhysio[1,i], sim1)
@@ -83,7 +83,7 @@ Run_batch_Quick2<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowRes
     
   } else if  (individual=="GW24"&partitionQSPR=="Schmitt") {  
     
-    sim1<-loadSimulation("pkmlFiles/Pregnant_simulation_Schmitt.pkml", loadFromCache = FALSE)
+    sim1<-loadSimulation("pkmlFiles and physiological db/Pregnant_simulation_Schmitt.pkml", loadFromCache = FALSE)
     
     for (i in 2:ncol(gestationaPhysio)){
       param2change24w<-getParameter(gestationaPhysio[1,i], sim1)
@@ -92,7 +92,7 @@ Run_batch_Quick2<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowRes
     
   } else if  (individual=="GW24"&partitionQSPR=="PKSim") {  
     
-    sim1<-loadSimulation("pkmlFiles/Pregnant_simulation_PKSim.pkml", loadFromCache = FALSE)
+    sim1<-loadSimulation("pkmlFiles and physiological db/Pregnant_simulation_PKSim.pkml", loadFromCache = FALSE)
     
     for (i in 2:ncol(gestationaPhysio)){
       param2change24w<-getParameter(gestationaPhysio[1,i], sim1)
@@ -101,7 +101,7 @@ Run_batch_Quick2<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowRes
     
   } else if  (individual=="GW24"&partitionQSPR=="Poulin") {  
     
-    sim1<-loadSimulation("pkmlFiles/Pregnant_simulation_Poulin.pkml", loadFromCache = FALSE)
+    sim1<-loadSimulation("pkmlFiles and physiological db/Pregnant_simulation_Poulin.pkml", loadFromCache = FALSE)
     
     for (i in 2:ncol(gestationaPhysio)){
       param2change24w<-getParameter(gestationaPhysio[1,i], sim1)

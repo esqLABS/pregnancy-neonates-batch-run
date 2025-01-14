@@ -1,4 +1,4 @@
-#Code to run the neonates and prgeanancy for 21mg/kg for 24 h and gets the Cmax
+#Code to run the neonates and pregnancy for 21mg/kg for 24 h and gets the Cmax
 #Author: Susana P
 
 #get the function
@@ -10,24 +10,31 @@ source("Neonate and Pregnancy sim function.R")
 #Dose_mg_kg is the dose in mg/kg 
 #highResol and lowResol are the resolution of the solver in points per minute
 #lowResol is the resolution in the 2 first hours and low Resol is for the remaining time
+#permeability can be NULL , high_oral_perm or high_oral_tissue_perm
 
-runSimulation_1<-Run_batch(individual="GW24",partitionQSPR="Poulin",
-                         Dose_mg_kg=1,highResol=0.33,lowResol=0.07)
+runSimulation_1<-Run_batch(individual="GW15",partitionQSPR="Rodger_Rowland",
+                         Dose_mg_kg=1,highResol=0.33,lowResol=0.07,
+                         permeability="high_oral_tissue_perm")
 
 
-write.csv(runSimulation_1$tableCmax, "C:/Users/SusanaProença/OneDrive - esqlabs GmbH/Desktop/ONTOX-PBK models/Pregnancy and Pediatric R Project batch run/GW24_Poulin.csv")
-#if you want to see the Cmax table
-View(runSimulation_1$tableCmax)
+# #if you want to see the Cmax table
+# View(runSimulation_1$tb_results)
+# #Save the file 
+# write.csv(runSimulation_1$tb_results, "/results_simulation.csv")
 
-#If you want to check a plot for neonates--------------------------------------
+#Plots--------------------------------------------------------------------------
+#If you want to check a plot for neonates
 chemical2plot<-"Warfarin"
 nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
 ### CHANGE SCALE TO LOG###
+max_y<-max(runSimulation_1$batchResList[[nrChemical]]$Brain.umol.L,
+           runSimulation_1$batchResList[[nrChemical]]$VenousPlasma.umol.L)
+
 plot(x=runSimulation_1$batchResList[[nrChemical]]$Time,
      y=runSimulation_1$batchResList[[nrChemical]]$Brain.umol.L,type="l",
      xlab="Time in min",
      ylab="Concentration in umol/L",
-     log='y',ylim=c(0.001,6))
+     log='y',ylim=c(0.001,max_y))
 lines(x=runSimulation_1$batchResList[[nrChemical]]$Time,
       y=runSimulation_1$batchResList[[nrChemical]]$VenousPlasma.umol.L,col="red")
 legend(x = "bottomright",          # Position
@@ -37,19 +44,24 @@ legend(x = "bottomright",          # Position
        lwd = 2)                 # Line width
 
 
-#If you want to check a plot for pregnancy-------------------------------------
-chemical2plot<-"B"
+#If you want to check a plot for pregnancy
+chemical2plot<-"Tetracycline"
 nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
+
+max_y<-max(runSimulation_1$batchResList[[nrChemical]]$FetusVenousPlasma.umol.L,
+           runSimulation_1$batchResList[[nrChemical]]$MaternalVenousPlasma.umol.L,
+           runSimulation_1$batchResList[[nrChemical]]$Fetus.umol.L)
+
 ### CHANGE SCALE TO LOG###
-plot(x=runSimulation$batchResList[[nrChemical]]$Time,
-     y=runSimulation$batchResList[[nrChemical]]$MaternalVenousPlasma.umol.L,type="l",
+plot(x=runSimulation_1$batchResList[[nrChemical]]$Time,
+     y=runSimulation_1$batchResList[[nrChemical]]$MaternalVenousPlasma.umol.L,type="l",
      xlab="Time in min",
      ylab="Concentration in umol/L",
-     log='y',ylim=c(0.005,7))
-lines(x=runSimulation$batchResList[[nrChemical]]$Time,
-      y=runSimulation$batchResList[[nrChemical]]$FetusVenousPlasma.umol.L,col="red")
-lines(x=runSimulation$batchResList[[nrChemical]]$Time,
-      y=runSimulation$batchResList[[nrChemical]]$Fetus.umol.L,col="blue")
+     log='y',ylim=c(0.0001,max_y))
+lines(x=runSimulation_1$batchResList[[nrChemical]]$Time,
+      y=runSimulation_1$batchResList[[nrChemical]]$FetusVenousPlasma.umol.L,col="red")
+lines(x=runSimulation_1$batchResList[[nrChemical]]$Time,
+      y=runSimulation_1$batchResList[[nrChemical]]$Fetus.umol.L,col="blue")
 legend(x = "bottomright",          # Position
        legend = c("maternal plasma","fetus plasma","fetus"),  # Legend texts
        lty = c(1, 2),           # Line types
