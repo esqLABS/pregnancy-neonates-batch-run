@@ -42,6 +42,7 @@ It can also be selected how oral permeability (Pint) and tissue permeability val
 as calculated. By default these parameters are calculated with the OSP internal QSAR. 
 We added options to run with a very high oral permeability and/or very high tissue permeability. 
 The aim is that we can run the simulations without permeability being a limited rate.
+Mind that for chemicals with very low Fub , effective permeability might still be limiting. 
 
 The codes to run httk files are contained in the folder :
 [httk files](https://github.com/esqLABS/pregnancy-neonates-batch-run/tree/master/httk%20files)
