@@ -190,7 +190,7 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol,perm
     parameterPaths[length(parameterPaths)+1]<-"Test_Chemical|Intestinal permeability (transcellular)"
     parameterPaths[length(parameterPaths)+1]<-"Test_Chemical|Permeability"
     
-  } else {}
+  } else if (permeability=="Normal"){}
 
   # define the simulation batch
   simBatch <- createSimulationBatch(simulation = sim1, parametersOrPaths = parameterPaths)
@@ -234,7 +234,7 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol,perm
       parameterValues[length(parameterValues)+1]<-0.1 #default high value
       parameterValues[length(parameterValues)+1]<-10  #default high value
       
-    } else {}
+    } else if (permeability=="Normal"){}
     
     simBatch$addRunValues(parameterValues = parameterValues)
     

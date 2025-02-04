@@ -2,15 +2,12 @@
 
 #get the function to make batch ssim
 source("Neonate and Pregnancy sim function.R")
-source("Neonate and Pregnancy sim function-full oral absorption and quick permeability.R")
-source("Neonate and Pregnancy sim function-full oral absorption.R")
-
 
 Analysis_6_months_predictions(partitionQSPR="Poulin",physchemOfInterest="logP",
-                              typeSimulation="HighOralAbsorAndPermeability",
+                              permeability=NULL,
                               comparison="GP")
 
-Analysis_6_months_predictions<-function(partitionQSPR,physchemOfInterest,typeSimulation,comparison){
+Analysis_6_months_predictions<-function(partitionQSPR,physchemOfInterest,permeability,comparison){
   
   library(ggplot2)
   library(ggpubr)
@@ -18,25 +15,13 @@ Analysis_6_months_predictions<-function(partitionQSPR,physchemOfInterest,typeSim
 #select the type of model we want to run , if oral permeability and permeability is set by the phys-chem
 #of if they are defaulted ot very high values so they are not rate limiting
 
-  if (typeSimulation=="Normal"){
-              runSimulation<-Run_batch(individual="6_months",
-                                           partitionQSPR=partitionQSPR,
-                                          Dose_mg_kg=1,highResol=0.33,lowResol=0.07)
-              
-  } else if (typeSimulation=="HighOralAbsorption"){
-             runSimulation<-Run_batch_QuickOral(individual="6_months",
-                                                partitionQSPR=partitionQSPR,
-                                                Dose_mg_kg=1,highResol=0.33,lowResol=0.07)
-             
-  } else if (typeSimulation=="HighOralAbsorAndPermeability"){
-  #simulation default high oral permeability and tissues permeability
-             runSimulation<-Run_batch_Quick2(individual="6_months",
-                                             partitionQSPR=partitionQSPR,
-                                             Dose_mg_kg=1,highResol=0.33,lowResol=0.07)
-  } else {print="error type simulation"}
-  
+
+   runSimulation<-Run_batch(individual="6_months",
+                            partitionQSPR=partitionQSPR,
+                            Dose_mg_kg=1,highResol=0.33,lowResol=0.07,permeability=permeability)
+       
 #Import results from httk and Gastroplus
-httk_GP_results<-read.csv("httk_GP_6months_results.csv")
+httk_GP_results<-read.csv("analysis for paper/httk_GP_6months_results.csv")
 
 if (comparison=="httk"){ 
   
@@ -51,7 +36,7 @@ if (comparison=="httk"){
 } else {print("error comparison")}
 
 ###Calculate fold differences###
-resultsSimulation<-runSimulation$tableCmax
+resultsSimulation<-runSimulation$tb_results
 resultsSimulation[,"Fold_Plasma_httk"]<-resultsSimulation[,"Cmax_Plasma_umol_L"]/stand_plasma_Cplasma
 resultsSimulation[,"Fold_Brain_httk"]<-resultsSimulation[,"Cmax_Brain_umol_L"]/stand_plasma_Cbrain
 resultsSimulation[,"Lipophilicity"]<-input_physchem$Lipophilicity
