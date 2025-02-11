@@ -3,11 +3,13 @@
 #get the function to make batch ssim
 source("Neonate and Pregnancy sim function.R")
 
-Analysis_6_months_predictions(partitionQSPR="Poulin",physchemOfInterest="logP",
-                              permeability=NULL,
-                              comparison="GP")
+# #example
+Analysis_6_months_predictions(partitionQSPR="Rodger_Rowland",physchemOfInterest="logP",
+                              permeability="Normal",
+                              comparison="httk",ionization="considered")
 
-Analysis_6_months_predictions<-function(partitionQSPR,physchemOfInterest,permeability,comparison){
+#fucntion
+Analysis_6_months_predictions<-function(partitionQSPR,physchemOfInterest,permeability,comparison,ionization){
   
   library(ggplot2)
   library(ggpubr)
@@ -18,7 +20,7 @@ Analysis_6_months_predictions<-function(partitionQSPR,physchemOfInterest,permeab
 
    runSimulation<-Run_batch(individual="6_months",
                             partitionQSPR=partitionQSPR,
-                            Dose_mg_kg=1,highResol=0.33,lowResol=0.07,permeability=permeability)
+                            Dose_mg_kg=1,highResol=0.33,lowResol=0.07,permeability=permeability,ionization)
        
 #Import results from httk and Gastroplus
 httk_GP_results<-read.csv("analysis for paper/httk_GP_6months_results.csv")

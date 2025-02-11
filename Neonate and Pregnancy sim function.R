@@ -9,7 +9,7 @@ input_physchem<-read.csv("test_files/test_batch_2.csv")
 nChemicals<-nrow(input_physchem)
 
 #function 
-Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol,permeability=NULL){
+Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol,permeability=NULL,ionization){
   
    #### Load PKML files ####
   # We load the pkml for which the batches will be created
@@ -179,7 +179,8 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol,perm
                     "Test_Chemical|Compound type 0",
                     "Test_Chemical|Compound type 1",
                     "Test_Chemical|Compound type 2")
-  
+
+      
   #to change permeability if we want to assum high permeability
   if (permeability=="high_oral_perm"){
     
@@ -217,13 +218,24 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol,perm
                          input_physchem[i,"Solubility..pH.7..g.mL."],
                          input_physchem[i,"Clearance..min."],
                          input_physchem[i,"MW.kg.umol."],
-                         effective_mw,
-                         input_physchem[i,"pKa1"],
-                         input_physchem[i,"pKa2"],
-                         input_physchem[i,"pKa3"],
-                         input_physchem[i,"CompountType1"],
-                         input_physchem[i,"CompountType2"],
-                         input_physchem[i,"CompountType3"])
+                         effective_mw)
+    
+    if (ionization=="considered"){
+      parameterValues[length(parameterValues)+1]<-input_physchem[i,"pKa1"]
+      parameterValues[length(parameterValues)+1]<-input_physchem[i,"pKa2"]
+      parameterValues[length(parameterValues)+1]<-input_physchem[i,"pKa3"]
+      parameterValues[length(parameterValues)+1]<-input_physchem[i,"CompountType1"]
+      parameterValues[length(parameterValues)+1]<-input_physchem[i,"CompountType2"]
+      parameterValues[length(parameterValues)+1]<-input_physchem[i,"CompountType3"]
+    } else{
+      
+      parameterValues[length(parameterValues)+1]<-0
+      parameterValues[length(parameterValues)+1]<-0
+      parameterValues[length(parameterValues)+1]<-0
+      parameterValues[length(parameterValues)+1]<-0
+      parameterValues[length(parameterValues)+1]<-0
+      parameterValues[length(parameterValues)+1]<-0
+    }
     
     if (permeability=="high_oral_perm"){
       

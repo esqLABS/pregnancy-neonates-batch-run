@@ -12,9 +12,9 @@ source("Neonate and Pregnancy sim function.R")
 #lowResol is the resolution in the 2 first hours and low Resol is for the remaining time
 #permeability can be Normal , high_oral_perm or high_oral_tissue_perm
 
-runSimulation_1<-Run_batch(individual="GW15",partitionQSPR="Rodger_Rowland",
+runSimulation_2<-Run_batch(individual="6_months",partitionQSPR="Schmitt",
                          Dose_mg_kg=1,highResol=0.33,lowResol=0.07,
-                         permeability="Normal")
+                         permeability="Normal",ionization="ignored")
 
 
 # #if you want to see the Cmax table
