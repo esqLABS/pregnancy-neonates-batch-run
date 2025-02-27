@@ -27,7 +27,7 @@ for (i in seq(1:length(PKalgor))){
   
   runSimulation[[i]]<-Run_batch(individual="GW24",partitionQSPR=PKalgor[i],
                                 Dose_mg_kg=1,highResol=0.33,lowResol=0.07,
-                                permeability="Normal",ionization="ignored") 
+                                permeability="Normal",ionization="ignored",Fu_correction="normal") 
   #need to edit this
   dataModel<-data.frame("Chemicals"=rownames(runSimulation[[i]]$tb_results),
                         "Cmax_plasma_maternal"=runSimulation[[i]]$tb_results[,1],

@@ -12,9 +12,9 @@ source("Neonate and Pregnancy sim function.R")
 #lowResol is the resolution in the 2 first hours and low Resol is for the remaining time
 #permeability can be Normal , high_oral_perm or high_oral_tissue_perm
 
-runSimulation_2<-Run_batch(individual="6_months",partitionQSPR="Schmitt",
+runSimulation_2<-Run_batch(individual="6_months",partitionQSPR="PKSim",
                          Dose_mg_kg=1,highResol=0.33,lowResol=0.07,
-                         permeability="Normal",ionization="ignored")
+                         permeability="Normal",ionization="ignored",Fu_correction="normal")
 
 
 # #if you want to see the Cmax table
@@ -24,25 +24,25 @@ runSimulation_2<-Run_batch(individual="6_months",partitionQSPR="Schmitt",
 
 #Plots--------------------------------------------------------------------------
 # #If you want to check a plot for neonates
-# chemical2plot<-"Warfarin"
-# nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
-# ### CHANGE SCALE TO LOG###
-# max_y<-max(runSimulation_1$batchResList[[nrChemical]]$Brain.umol.L,
-#            runSimulation_1$batchResList[[nrChemical]]$VenousPlasma.umol.L)
-# 
-# plot(x=runSimulation_1$batchResList[[nrChemical]]$Time,
-#      y=runSimulation_1$batchResList[[nrChemical]]$Brain.umol.L,type="l",
-#      xlab="Time in min",
-#      ylab="Concentration in umol/L",
-#      log='y',ylim=c(0.001,max_y))
-# lines(x=runSimulation_1$batchResList[[nrChemical]]$Time,
-#       y=runSimulation_1$batchResList[[nrChemical]]$VenousPlasma.umol.L,col="red")
-# legend(x = "bottomright",          # Position
-#        legend = c("brain", "plasma"),  # Legend texts
-#        lty = c(1, 2),           # Line types
-#        col = c("black", "red"),           # Line colors
-#        lwd = 2)                 # Line width
-# 
+chemical2plot<-"5,5-Diphenylhydantoin"
+nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
+### CHANGE SCALE TO LOG###
+max_y<-max(runSimulation_1$batchResList[[nrChemical]]$Brain.umol.L,
+           runSimulation_1$batchResList[[nrChemical]]$VenousPlasma.umol.L)
+
+plot(x=runSimulation_1$batchResList[[nrChemical]]$Time,
+     y=runSimulation_1$batchResList[[nrChemical]]$Brain.umol.L,type="l",
+     xlab="Time in min",
+     ylab="Concentration in umol/L",
+     log='y',ylim=c(0.001,max_y))
+lines(x=runSimulation_1$batchResList[[nrChemical]]$Time,
+      y=runSimulation_1$batchResList[[nrChemical]]$VenousPlasma.umol.L,col="red")
+legend(x = "bottomright",          # Position
+       legend = c("brain", "plasma"),  # Legend texts
+       lty = c(1, 2),           # Line types
+       col = c("black", "red"),           # Line colors
+       lwd = 2)                 # Line width
+
 # 
 # #If you want to check a plot for pregnancy
 # chemical2plot<-"Tetracycline"

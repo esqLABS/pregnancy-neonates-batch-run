@@ -6,10 +6,13 @@ library(DBI)
 
 #load the chemicals_input parameters
 input_physchem<-read.csv("test_files/test_batch_2.csv")
+
+fNL_plasma<-7E-3
+input_physchem[,"Fu_adjusted"]<-1/((10^input_physchem[,"Lipophilicity"])*fNL_plasma +1/input_physchem[,"Fub"])
 nChemicals<-nrow(input_physchem)
 
 #function 
-Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol,permeability=NULL,ionization){
+Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol,permeability,ionization,Fu_correction){
   
    #### Load PKML files ####
   # We load the pkml for which the batches will be created
@@ -201,7 +204,15 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol,perm
   
   ##Check if imported correctly
   #View(input_physchem)
+  
+  #option to adjust Fu according to Pearce 2017 manuscript
 
+  if (Fu_correction=="Yes"){
+    fu_vector<-input_physchem[,"Fu_adjusted"]
+  } else {
+    fu_vector<-input_physchem[,"Fub"]
+  }
+  
   #The number of parameters to vary for each batch
   #needs to correspond to the vector of parameterPaths and in the same order
   for (i in 1:nChemicals){
@@ -213,7 +224,7 @@ Run_batch<-function (individual,partitionQSPR,Dose_mg_kg,highResol,lowResol,perm
     nI<- str_count(input_physchem[i,"SMILES"], "I")
     effective_mw<-input_physchem$MW[i] - nF * 0.000000017 - nCl * 0.000000022 - nBr * 0.000000062 - nI * 0.000000098 
     
-    parameterValues = c( input_physchem[i,"Fub"],
+    parameterValues = c( fu_vector[i],
                          input_physchem[i,"Lipophilicity"],
                          input_physchem[i,"Solubility..pH.7..g.mL."],
                          input_physchem[i,"Clearance..min."],

@@ -3,13 +3,13 @@
 #get the function to make batch ssim
 source("Neonate and Pregnancy sim function.R")
 
-# #example
-Analysis_6_months_predictions(partitionQSPR="Rodger_Rowland",physchemOfInterest="logP",
+# example
+Analysis_6_months_predictions(partitionQSPR="PKSim",physchemOfInterest="Fu_adjustment/Fu",
                               permeability="Normal",
-                              comparison="httk",ionization="considered")
+                              comparison="httk",ionization="considered",Fu_correction="No")
 
 #fucntion
-Analysis_6_months_predictions<-function(partitionQSPR,physchemOfInterest,permeability,comparison,ionization){
+Analysis_6_months_predictions<-function(partitionQSPR,physchemOfInterest,permeability,comparison,ionization,Fu_correction){
   
   library(ggplot2)
   library(ggpubr)
@@ -20,7 +20,7 @@ Analysis_6_months_predictions<-function(partitionQSPR,physchemOfInterest,permeab
 
    runSimulation<-Run_batch(individual="6_months",
                             partitionQSPR=partitionQSPR,
-                            Dose_mg_kg=1,highResol=0.33,lowResol=0.07,permeability=permeability,ionization)
+                            Dose_mg_kg=1,highResol=0.33,lowResol=0.07,permeability=permeability,ionization,Fu_correction)
        
 #Import results from httk and Gastroplus
 httk_GP_results<-read.csv("analysis for paper/httk_GP_6months_results.csv")
@@ -58,6 +58,10 @@ if (physchemOfInterest=="logP"){
 } else if (physchemOfInterest=="Log_Fub"){
   
   resultsSimulation[,"physchem"]<-resultsSimulation[,"Log_Fub"]
+  
+ } else if (physchemOfInterest=="Fu_adjustment/Fu"){
+  
+  resultsSimulation[,"physchem"]<-input_physchem$Fu_adjusted/input_physchem$Fub
   
 } else if (physchemOfInterest=="Log Clearance"){
   
@@ -115,13 +119,22 @@ PK_Sim_Kbrain_httkVSPKSim<-ggplot(resultsSimulation, aes(x=httkORgp_sim_Kbrain, 
 PK_Sim_PredSimKbrain<-ggplot(resultsSimulation, aes(x =log10(BrainK), y =log10(Cmax_Brain_umol_L/Cmax_Plasma_umol_L), color = physchem)) +
   geom_point() +
   geom_abline(intercept = 0, slope = 1)+
+  geom_abline(intercept = -1, slope = 1,linetype="dashed")+
+  annotate("text", x=-0.15, y=-3, label="0.1 fold")+
   labs(title = "Pred vs simulated log10 Kbrain/plasma",
        x = "Predicted log10 Kbrain",
        y = "Simulated log10 Kbrain",
        color = physchemOfInterest)+
   theme_bw() 
-     
-
 ggarrange(PK_Sim_FoldCmaxPlasma,PK_Sim_FoldCmaxBrain,PK_Sim_Kbrain_httkVSPKSim,PK_Sim_PredSimKbrain)
- 
+
+cmax_brain<-resultsSimulation$Cmax_Brain_umol_L
+cmax_plasma<-resultsSimulation$Cmax_Plasma_umol_L
+kp_brain<-resultsSimulation$BrainK
+
+nr_underpre_simK<-length(which(cmax_brain/cmax_plasma<kp_brain*0.1))/92
+mean_diff_simK_pred_K<-mean(cmax_brain/cmax_plasma/kp_brain)
+print(c(nr_underpre_simK,mean_diff_simK_pred_K))
+
+
 }
