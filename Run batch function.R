@@ -14,12 +14,45 @@ source("Neonate and Pregnancy sim function.R")
 
 runSimulation_1<-Run_batch(individual="GW24",partitionQSPR="PKSim",
                          Dose_mg_kg=1,highResol=0.33,lowResol=0.07,
-                         permeability="Normal",ionization="ignored",Fu_correction="No")
+                         permeability="Normal",ionization="ignored",Fu_correction="Yes")
    
-# #if you want to see the Cmax table
+# if you want to see the Cmax table
 # View(runSimulation_1$tb_results)
 # #Save the file 
-write.csv(runSimulation_1$tb_results, "Poulin_fuoriginal_GW24.csv")
+#write.csv(runSimulation_1$tb_results, "Poulin_fuoriginal_GW24.csv")
+
+# #To Have preditcions to comapre to experimental values
+# chemical2plot<-"Benz[a]anthracene"
+# nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
+# write.csv(runSimulation_1$batchResList[[nrChemical]],"Benz(a)anthracene_PK-Sim_fucorrect.csv")
+# 
+# chemical2plot<-"Dieldrin"
+# nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
+# write.csv(runSimulation_1$batchResList[[nrChemical]],"Dieldrin_PK-Sim_fucorrect.csv")
+# 
+# chemical2plot<-"Heptachlor"
+# nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
+# write.csv(runSimulation_1$batchResList[[nrChemical]],"Heptachlor_PK-Sim_fucorrect.csv")
+# 
+# chemical2plot<-"Heptachlor epoxide, isomer B"
+# nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
+# write.csv(runSimulation_1$batchResList[[nrChemical]],"Heptachlor_epoxideB_PK-Sim_fucorrect.csv")
+# 
+# chemical2plot<-"p,p'-DDD"
+# nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
+# write.csv(runSimulation_1$batchResList[[nrChemical]],"p,p'-DDD_PK-Sim_fucorrect.csv")
+# 
+# chemical2plot<-"o,p'-DDT"
+# nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
+# write.csv(runSimulation_1$batchResList[[nrChemical]],"o,p'-DDT_PK-Sim_fucorrect.csv")
+# 
+# chemical2plot<-"p,p'-DDT"
+# nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
+# write.csv(runSimulation_1$batchResList[[nrChemical]],"p,p'-DDT_PK-Sim_fucorrect.csv")
+# 
+# chemical2plot<-"Perfluorooctanoic acid"
+# nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
+# write.csv(runSimulation_1$batchResList[[nrChemical]],"PFOA-DDT_PK-Sim_fucorrect.csv")
 
 #Plots--------------------------------------------------------------------------
 # #If you want to check a plot for neonates
