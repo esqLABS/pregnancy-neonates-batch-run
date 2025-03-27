@@ -12,15 +12,14 @@ source("Neonate and Pregnancy sim function.R")
 #lowResol is the resolution in the 2 first hours and low Resol is for the remaining time
 #permeability can be Normal , high_oral_perm or high_oral_tissue_perm
 
-runSimulation_2<-Run_batch(individual="6_months",partitionQSPR="PKSim",
+runSimulation_1<-Run_batch(individual="GW24",partitionQSPR="PKSim",
                          Dose_mg_kg=1,highResol=0.33,lowResol=0.07,
-                         permeability="Normal",ionization="ignored",Fu_correction="normal")
-
-
+                         permeability="Normal",ionization="ignored",Fu_correction="No")
+   
 # #if you want to see the Cmax table
 # View(runSimulation_1$tb_results)
 # #Save the file 
-# write.csv(runSimulation_1$tb_results, "/results_simulation.csv")
+write.csv(runSimulation_1$tb_results, "Poulin_fuoriginal_GW24.csv")
 
 #Plots--------------------------------------------------------------------------
 # #If you want to check a plot for neonates
