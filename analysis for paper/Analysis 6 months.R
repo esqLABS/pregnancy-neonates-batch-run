@@ -4,9 +4,9 @@
 source("Neonate and Pregnancy sim function.R")
 
 # example
-Analysis_6_months_predictions(partitionQSPR="PKSim",physchemOfInterest="Fu_adjustment/Fu",
-                              permeability="Normal",
-                              comparison="httk",ionization="considered",Fu_correction="No")
+Analysis_6_months_predictions(partitionQSPR="Poulin",physchemOfInterest="Fu_adjustment/Fu",
+                              permeability="high_oral_tissue_perm",
+                              comparison="httk",ionization="notconsidered",Fu_correction="No")
 
 #fucntion
 Analysis_6_months_predictions<-function(partitionQSPR,physchemOfInterest,permeability,comparison,ionization,Fu_correction){
@@ -126,15 +126,16 @@ PK_Sim_PredSimKbrain<-ggplot(resultsSimulation, aes(x =log10(BrainK), y =log10(C
        y = "Simulated log10 Kbrain",
        color = physchemOfInterest)+
   theme_bw() 
-ggarrange(PK_Sim_FoldCmaxPlasma,PK_Sim_FoldCmaxBrain,PK_Sim_Kbrain_httkVSPKSim,PK_Sim_PredSimKbrain)
+#ggarrange(PK_Sim_FoldCmaxPlasma,PK_Sim_FoldCmaxBrain,PK_Sim_Kbrain_httkVSPKSim,PK_Sim_PredSimKbrain)
+ggarrange(PK_Sim_FoldCmaxPlasma,PK_Sim_FoldCmaxBrain)
 
-cmax_brain<-resultsSimulation$Cmax_Brain_umol_L
-cmax_plasma<-resultsSimulation$Cmax_Plasma_umol_L
-kp_brain<-resultsSimulation$BrainK
-
-nr_underpre_simK<-length(which(cmax_brain/cmax_plasma<kp_brain*0.1))/92
-mean_diff_simK_pred_K<-mean(cmax_brain/cmax_plasma/kp_brain)
-print(c(nr_underpre_simK,mean_diff_simK_pred_K))
+# cmax_brain<-resultsSimulation$Cmax_Brain_umol_L
+# cmax_plasma<-resultsSimulation$Cmax_Plasma_umol_L
+# kp_brain<-resultsSimulation$BrainK
+# 
+# nr_underpre_simK<-length(which(cmax_brain/cmax_plasma<kp_brain*0.1))/92
+# mean_diff_simK_pred_K<-mean(cmax_brain/cmax_plasma/kp_brain)
+# print(c(nr_underpre_simK,mean_diff_simK_pred_K))
 
 
 }

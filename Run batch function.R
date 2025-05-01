@@ -11,17 +11,19 @@ source("Neonate and Pregnancy sim function.R")
 #highResol and lowResol are the resolution of the solver in points per minute
 #lowResol is the resolution in the 2 first hours and low Resol is for the remaining time
 #permeability can be Normal , high_oral_perm or high_oral_tissue_perm
+#ionization can be considered or ignored
+#Fu_correction, Yes or No if we want to have the Fu correct for the lipophilicity
 
-runSimulation_1<-Run_batch(individual="GW24",partitionQSPR="PKSim",
+runSimulation_1<-Run_batch(individual="6_months",partitionQSPR="PKSim",
                          Dose_mg_kg=1,highResol=0.33,lowResol=0.07,
-                         permeability="Normal",ionization="ignored",Fu_correction="Yes")
-   
+                         permeability="Normal",ionization="ignored",Fu_correction="No")
+  
 # if you want to see the Cmax table
 # View(runSimulation_1$tb_results)
 # #Save the file 
 #write.csv(runSimulation_1$tb_results, "Poulin_fuoriginal_GW24.csv")
 
-# #To Have preditcions to comapre to experimental values
+# #To Have preditcions to compare to experimental values
 # chemical2plot<-"Benz[a]anthracene"
 # nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
 # write.csv(runSimulation_1$batchResList[[nrChemical]],"Benz(a)anthracene_PK-Sim_fucorrect.csv")
