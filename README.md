@@ -27,6 +27,7 @@ These improvements on the PBK model parameterization are being developed in the 
 
 ## Description of the project
 
+### OSP
 The file [Neonate and Pregnancy sim function.R](https://github.com/esqLABS/pregnancy-neonates-batch-run/blob/master/Neonate%20and%20Pregnancy%20sim%20function.R) has the workflow to make the simulations for the different ages, partition coefficients and get the different outputs.
 If file is changed we advised running the file [Run_different_models.R](https://github.com/esqLABS/pregnancy-neonates-batch-run/blob/master/test_files/Run_different_models.R) to make sure there is no errors popping with any of the selections. 
 
@@ -44,12 +45,13 @@ We added options to run with a very high oral permeability and/or very high tiss
 The aim is that we can run the simulations without permeability being a limited rate.
 Mind that for chemicals with very low Fub , effective permeability might still be limiting. 
 
+### httk
 The codes to run httk files are contained in the folder :
 [httk files](https://github.com/esqLABS/pregnancy-neonates-batch-run/tree/master/httk%20files)
 
 These files include the script used to run the pregnancy PBPK model (https://github.com/esqLABS/pregnancy-neonates-batch-run/blob/master/httk%20files/FetalPBTKhttk.R), the standard model at infant timepoints ([PedPBTKhttk.R](https://github.com/esqLABS/pregnancy-neonates-batch-run/blob/master/httk%20files/PedPBTKhttk.R), and the Python script used for calculation and analysis of httk outputs.
 
-Some comparison of the 6-mnoths old simulations from the different softwares in the folder [analysis for paper](https://github.com/esqLABS/pregnancy-neonates-batch-run/tree/master/analysis%20for%20paper)
+Some comparison of the 6-months old simulations from the different softwares in the folder [analysis for paper](https://github.com/esqLABS/pregnancy-neonates-batch-run/tree/master/analysis%20for%20paper)
 
 
 
