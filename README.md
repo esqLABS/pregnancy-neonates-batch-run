@@ -49,7 +49,7 @@ Mind that for chemicals with very low Fub , effective permeability might still b
 The codes to run httk files are contained in the folder :
 [httk files](https://github.com/esqLABS/pregnancy-neonates-batch-run/tree/master/httk%20files)
 
-These files include the script used to run the pregnancy PBPK model (httk files/FetalPBTKhttk.R) , the standard model at infant timepoints ([PedPBTKhttk.R](https://github.com/esqLABS/pregnancy-neonates-batch-run/blob/master/httk%20files/PedPBTKhttk.R), and the Python script used for calculation and analysis of httk outputs.
+These files include the script used to run the pregnancy PBPK model ([FetalPBTKhttk.R](https://github.com/esqLABS/pregnancy-neonates-batch-run/blob/master/httk%20files/FetalPBTKhttk.R) , the standard model at infant timepoints ([PedPBTKhttk.R](https://github.com/esqLABS/pregnancy-neonates-batch-run/blob/master/httk%20files/PedPBTKhttk.R), and the Python script used for calculation and analysis of httk outputs.
 
 Some comparison of the 6-months old simulations from the different softwares in the folder [analysis for paper](https://github.com/esqLABS/pregnancy-neonates-batch-run/tree/master/analysis%20for%20paper)
 
