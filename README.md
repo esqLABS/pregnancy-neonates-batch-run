@@ -5,7 +5,7 @@
 <p align="justify">
 
 This project aim is to run acute exposure in PK-Sim standard PBK model with several
-chemicals in batch for neonates (2 weeks and 6 months)and pregnancy (GW 15 and 24) for oral exposure.   
+chemicals in batch for neonates (2 weeks and 6 months) and pregnancy (GW 15 and 24) for oral exposure.   
 The project started with a collaboration with INOTIV where simulations were compared with 
 httk and Simulation Plus.
 This comparison resulted in the publication: 
@@ -25,9 +25,19 @@ But we are also working on improving a workflow for parameterizing PK-Sim PBK mo
 
 These improvements on the PBK model parameterization are being developed in the ONTOX project and will be added here. 
 
-## Description of the project
+## Description of the repository
+
+This R project requires the installation of ospsuiteR package.
+To do so, insert:
+
+install.packages("remotes")
+remotes::install_github("Open-Systems-Pharmacology/OSPSuite-R@*release")
+
+This will install the package and its dependencies.
+Remaining packages, from CRAN, can be installed by running ren::status() and then  renv::restore().
 
 ### OSP
+
 The file [Neonate and Pregnancy sim function.R](https://github.com/esqLABS/pregnancy-neonates-batch-run/blob/master/Neonate%20and%20Pregnancy%20sim%20function.R) has the workflow to make the simulations for the different ages, partition coefficients and get the different outputs.
 If file is changed we advised running the file [Run_different_models.R](https://github.com/esqLABS/pregnancy-neonates-batch-run/blob/master/test_files/Run_different_models.R) to make sure there is no errors popping with any of the selections. 
 
@@ -44,6 +54,8 @@ as calculated. By default these parameters are calculated with the OSP internal 
 We added options to run with a very high oral permeability and/or very high tissue permeability. 
 The aim is that we can run the simulations without permeability being a limited rate.
 Mind that for chemicals with very low Fub , effective permeability might still be limiting. 
+
+
 
 ### httk
 The codes to run httk files are contained in the folder :

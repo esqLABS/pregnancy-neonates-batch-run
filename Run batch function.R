@@ -14,16 +14,17 @@ source("Neonate and Pregnancy sim function.R")
 #ionization can be considered or ignored
 #Fu_correction, Yes or No if we want to have the Fu correct for the lipophilicity
 
-runSimulation_1<-Run_batch(individual="6_months",partitionQSPR="PKSim",
+runSimulation_1<-Run_batch(individual="GW15",partitionQSPR="PKSim",
                          Dose_mg_kg=1,highResol=0.33,lowResol=0.07,
                          permeability="Normal",ionization="ignored",Fu_correction="No")
   
 # if you want to see the Cmax table
 # View(runSimulation_1$tb_results)
-# #Save the file 
-#write.csv(runSimulation_1$tb_results, "Poulin_fuoriginal_GW24.csv")
 
-# #To Have preditcions to compare to experimental values
+# Save the file 
+# write.csv(runSimulation_1$tb_results, "Poulin_fuoriginal_GW24.csv")
+
+# #To Have predictions to compare to experimental values
 # chemical2plot<-"Benz[a]anthracene"
 # nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
 # write.csv(runSimulation_1$batchResList[[nrChemical]],"Benz(a)anthracene_PK-Sim_fucorrect.csv")
@@ -58,24 +59,24 @@ runSimulation_1<-Run_batch(individual="6_months",partitionQSPR="PKSim",
 
 #Plots--------------------------------------------------------------------------
 # #If you want to check a plot for neonates
-chemical2plot<-"5,5-Diphenylhydantoin"
-nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
-### CHANGE SCALE TO LOG###
-max_y<-max(runSimulation_1$batchResList[[nrChemical]]$Brain.umol.L,
-           runSimulation_1$batchResList[[nrChemical]]$VenousPlasma.umol.L)
-
-plot(x=runSimulation_1$batchResList[[nrChemical]]$Time,
-     y=runSimulation_1$batchResList[[nrChemical]]$Brain.umol.L,type="l",
-     xlab="Time in min",
-     ylab="Concentration in umol/L",
-     log='y',ylim=c(0.001,max_y))
-lines(x=runSimulation_1$batchResList[[nrChemical]]$Time,
-      y=runSimulation_1$batchResList[[nrChemical]]$VenousPlasma.umol.L,col="red")
-legend(x = "bottomright",          # Position
-       legend = c("brain", "plasma"),  # Legend texts
-       lty = c(1, 2),           # Line types
-       col = c("black", "red"),           # Line colors
-       lwd = 2)                 # Line width
+# chemical2plot<-"5,5-Diphenylhydantoin"
+# nrChemical<-which(input_physchem[,"Chemical"]==chemical2plot)
+# ### CHANGE SCALE TO LOG###
+# max_y<-max(runSimulation_1$batchResList[[nrChemical]]$Brain.umol.L,
+#            runSimulation_1$batchResList[[nrChemical]]$VenousPlasma.umol.L)
+# 
+# plot(x=runSimulation_1$batchResList[[nrChemical]]$Time,
+#      y=runSimulation_1$batchResList[[nrChemical]]$Brain.umol.L,type="l",
+#      xlab="Time in min",
+#      ylab="Concentration in umol/L",
+#      log='y',ylim=c(0.001,max_y))
+# lines(x=runSimulation_1$batchResList[[nrChemical]]$Time,
+#       y=runSimulation_1$batchResList[[nrChemical]]$VenousPlasma.umol.L,col="red")
+# legend(x = "bottomright",          # Position
+#        legend = c("brain", "plasma"),  # Legend texts
+#        lty = c(1, 2),           # Line types
+#        col = c("black", "red"),           # Line colors
+#        lwd = 2)                 # Line width
 
 # 
 # #If you want to check a plot for pregnancy
