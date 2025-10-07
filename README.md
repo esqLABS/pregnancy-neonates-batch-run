@@ -28,13 +28,15 @@ These improvements on the PBK model parameterization are being developed in the 
 ## Description of the repository
 
 This R project requires the installation of ospsuiteR package.
-To do so, insert:
+To do so, use:
 
-install.packages("remotes")
-remotes::install_github("Open-Systems-Pharmacology/OSPSuite-R@*release")
+``` install.packages("remotes") ``` 
+``` remotes::install_github("Open-Systems-Pharmacology/OSPSuite-R@*release")```
 
 This will install the package and its dependencies.
-Remaining packages, from CRAN, can be installed by running ren::status() and then  renv::restore().
+Remaining packages, from CRAN, can be installed by running 
+```ren::status()``` 
+```renv::restore()``` 
 
 ### OSP
 
@@ -63,7 +65,9 @@ The codes to run httk files are contained in the folder :
 
 These files include the script used to run the pregnancy PBPK model ([FetalPBTKhttk.R](https://github.com/esqLABS/pregnancy-neonates-batch-run/blob/master/httk%20files/FetalPBTKhttk.R) , the standard model at infant timepoints ([PedPBTKhttk.R](https://github.com/esqLABS/pregnancy-neonates-batch-run/blob/master/httk%20files/PedPBTKhttk.R), and the Python script used for calculation and analysis of httk outputs.
 
-Some comparison of the 6-months old simulations from the different softwares in the folder [analysis for paper](https://github.com/esqLABS/pregnancy-neonates-batch-run/tree/master/analysis%20for%20paper)
+### Analysis
+
+Some comparison of the 6-months old simulations from the different softwares in the folder [analysis for paper](https://github.com/esqLABS/pregnancy-neonates-batch-run/tree/master/analysis%20for%20paper).
 
 
 
