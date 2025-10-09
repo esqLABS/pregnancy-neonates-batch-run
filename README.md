@@ -27,7 +27,11 @@ These improvements on the PBK model parameterization are being developed in the 
 
 ## Description of the repository
 
+This is a R project (Pregnancy and Pediatric batch run.Rproj) that uses R environment (renv).
+The files .gitignore, .Rprofile and renv.lock are all files related to renv or git.
+
 This R project requires the installation of ospsuiteR package.
+
 To do so, use:
 
 ``` install.packages("remotes") ``` 
@@ -37,6 +41,8 @@ This will install the package and its dependencies.
 Remaining packages, from CRAN, can be installed by running 
 ```ren::status()``` 
 ```renv::restore()``` 
+
+
 
 ### OSP
 
